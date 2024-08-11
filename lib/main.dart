@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'views/login_v.dart' as login;
+import '/views/login_v.dart' as login;
+import '/constants.dart' as consts;
+import 'package:firebase_core/firebase_core.dart' as fbCore;
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await fbCore.Firebase.initializeApp();
   runApp(const AppBase());
 }
 
@@ -17,8 +21,7 @@ class AppBase extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 58, 183, 125)),
         useMaterial3: true,
       ),
-      home: const login.LoginPage(title: 'Memory Keeper'),
+      home: const login.LoginPage(title: consts.ConstStr.loginTitle),
     );
   }
 }
-
