@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/constants.dart' as consts;
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fbAuth;
+import 'package:firebase_core/firebase_core.dart' as fbCore;
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -14,6 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String _email = '';
   String _password = '';
+  String _loginResultMsg = '';
 
   @override
   Widget build(BuildContext context) {
@@ -43,23 +44,33 @@ class _LoginPageState extends State<LoginPage> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0))),
                   onChanged: (String password) {
-                    setState(() {
-                      this._password = password;
-                    });
+                    setState(() => this._password = password);
                   }),
+              // Debug用
+              Text(this._loginResultMsg),
               ElevatedButton(
-                onPressed: () {
-                  // TODO:フォームが送信されたときの処理を記述
-                },
+                onPressed: () => this._firebaseLogin(),
                 child: Text(consts.ConstStr.submit),
               ),
-              // Debug用
-              // Text(this._email),
-              // Text(this._password),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _firebaseLogin() async {
+    try {
+      final fbAuth.FirebaseAuth auth = fbAuth.FirebaseAuth.instance;
+      final fbAuth.UserCredential result =
+          await auth.signInWithEmailAndPassword(
+        email: this._email,
+        password: this._password,
+      );
+      final fbAuth.User user = result.user!;
+      setState(() => this._loginResultMsg = 'Login Success');
+    } catch (ex) {
+      setState(() => this._loginResultMsg = consts.ConstErr.login);
+    }
   }
 }
