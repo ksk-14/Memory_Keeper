@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/views/login_v.dart' as login;
-import '/constants.dart' as consts;
+import 'config/constants.dart' as consts;
 import 'package:firebase_core/firebase_core.dart' as fbCore;
 
 Future<void> main() async {
@@ -14,9 +14,9 @@ class AppBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return new MaterialApp(
       title: 'Memory Keeper',
-      theme: ThemeData(
+      theme: new ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 58, 183, 125)),
         useMaterial3: true,
